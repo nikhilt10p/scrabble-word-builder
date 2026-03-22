@@ -12,14 +12,14 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-// boots the full Spring context so dictionary and letter data load exactly as they do in prod
+// boots the full Spring context so dictionary and the letter data load exactly as in the prod 
 @SpringBootTest
 class ScrabbleServiceTest {
 
     @Autowired
     private ScrabbleService service;
 
-    // --- challenge examples from the document ---
+    // challenge examples from the document 
 
     @Test
     void example1_rackAIDOORW_boardWIZ_shouldReturnWizard() {
@@ -35,7 +35,7 @@ class ScrabbleServiceTest {
         Optional<Map.Entry<String, Integer>> result = service.findBestWord("AIDOORW", null);
 
         assertTrue(result.isPresent());
-        // DRAW, WARD, WORD all score 8 — DRAW wins alphabetically
+        // DRAW, WARD, WORD all score 8 — DRAW wins alphabetically (handling in alphabetical order)
         assertEquals("DRAW", result.get().getKey());
         assertEquals(8, result.get().getValue());
     }
@@ -61,7 +61,7 @@ class ScrabbleServiceTest {
                    ex.getMessage().toLowerCase().contains("rack"));
     }
 
-    // --- input validation ---
+    //  input validation 
 
     @Test
     void nullRack_shouldThrow() {
@@ -121,7 +121,7 @@ class ScrabbleServiceTest {
         assertThrows(InvalidInputException.class, () -> service.findBestWord("ABCDEFGH", null));
     }
 
-    // --- scoring and helpers ---
+    // Scoring and helpers 
 
     @Test
     void scoreWord_wizardShouldBe19() {
@@ -147,7 +147,7 @@ class ScrabbleServiceTest {
 
     @Test
     void tieBreaking_shouldReturnAlphabeticallyFirst() {
-        // DRAW and WARD both score 8 from AIDOORW — DRAW should win
+        // DRAW and WARD both score 8 from AIDOORW, DRAW should win
         Optional<Map.Entry<String, Integer>> result = service.findBestWord("AIDOORW", null);
         assertTrue(result.isPresent());
         assertTrue(result.get().getKey().compareTo("WARD") <= 0);
