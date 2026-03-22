@@ -3,7 +3,7 @@ package com.hasbropulse.scrabble.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-// null fields are skipped in the JSON output — so "message" only shows up when there's no word
+// The null fields are skipped in the JSON output, so only the messages only shows up when there's no word
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(description = "Response containing the best Scrabble word found")
 public class WordResponse {
@@ -19,13 +19,13 @@ public class WordResponse {
 
     public WordResponse() {}
 
-    // use this when we found a valid word
+    // uses this when found a valid word
     public WordResponse(String word, int score) {
         this.word = word;
         this.score = score;
     }
 
-    // use this when nothing could be formed
+    // when nothing could be formed
     public WordResponse(String message) {
         this.message = message;
     }
