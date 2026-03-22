@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.Optional;
 
-// two endpoints:
-//   POST /api/scrabble/best-word  — main word-finding logic
-//   GET  /api/scrabble/health     — quick check that the service is up
+// Our two endpoints
+//   POST /api/scrabble/best-word, main word-finding logic
+//   GET  /api/scrabble/health, quick check statting that service is up and running 
 @RestController
 @RequestMapping("/api/scrabble")
 @Tag(name = "Scrabble Word Builder", description = "Endpoints for the Hasbro Pulse Scrabble challenge")
