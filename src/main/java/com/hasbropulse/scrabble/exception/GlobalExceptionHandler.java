@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-// catches exceptions from all controllers and maps them to clean JSON error responses
+// catches exceptions from all controllers and maps them to clean JSON based error responses
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // our own validation errors — bad rack, tile limit exceeded, etc.
+    // our own validation errors like bad rack, tile limit exceeded, etc
     @ExceptionHandler(InvalidInputException.class)
     public ResponseEntity<Map<String, String>> handleInvalidInput(InvalidInputException ex) {
         return buildError(HttpStatus.BAD_REQUEST, "Invalid input", ex.getMessage());
