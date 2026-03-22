@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-// request body for POST /api/scrabble/best-word
+// request body for POST /api/scrabble/best word
 @Schema(description = "Request payload for finding the best Scrabble word")
 public class WordRequest {
 
