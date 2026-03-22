@@ -1,6 +1,6 @@
 package com.hasbropulse.scrabble.exception;
 
-// thrown when the request violates input rules — bad rack size, tile limit exceeded, non-alpha chars, etc.
+// This is thrown when the request violates input rules such as bad rack size, tile limit exceeded, non-alpha chars, etc
 public class InvalidInputException extends RuntimeException {
 
     public InvalidInputException(String message) {
