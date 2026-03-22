@@ -1,61 +1,63 @@
-# Scrabble Word Builder
+Scrabble Word Builder
 
-My solution to the Hasbro Pulse Engineering coding challenge. You give it a rack of up to 7 letters and optionally a word already on the board, and it finds the highest possible scoring valid Scrabble word you can form from those tiles.
+My solution to the Hasbro Pulse Engineering coding challenge. You give it a rack of up to 7 letters and optionally a word already on the board, and it finds the highest possible scoring valid Scrabble word you can form from those given tiles.
 
-I built it as a Spring Boot REST API with a browser UI. The challenge was open-ended about format so I went with REST since it fits the problem naturally, and added a UI on top so it's easy to try without touching the terminal. Swagger is also wired up if you prefer that.
+I built it on the Spring Boot REST API with a browser UI. As the challenge was open-ended about format so I went with REST since it fits the problem naturally, and integrated a UI on top so it's easy to try without touching the terminal. Swagger is also wired up if you like it.
 
 
-# What you need to run 
+What you need to run 
 
 Java 17
 Maven 3.8+
 
 
-# Project structure
+Project structure
+File structure of the project
 
 scrabble-word-builder/
-- pom.xml                              Maven's build file, lists all dependencies and Java version
-- README.md                            Current file
+- pom.xml (Contains Maven's build file, lists all dependencies and Java version)
+- README.md (Detailed project description on how its build, technologies, how to run)
 - src/
   - main/
     - java/com/hasbropulse/scrabble/
-      - ScrabbleWordBuilderApplication.java   Starts only the Spring Boot app
+      - ScrabbleWordBuilderApplication.java  (Starts only the Spring Boot application)
       - controller/
-        - ScrabbleController.java             Takes HTTP requests, calls the service, sends back the response
+        - ScrabbleController.java    (Takes HTTP requests, calls the service, sends back the response in return)
       - service/
-        - ScrabbleService.java                Actual logic - validates input, scans the dictionary, picks the best word
+        - ScrabbleService.java    (Actual business logic validates input, scans the dictionary, picks the best word)
       - dto/
-        - WordRequest.java                    Defines what the request body looks like (rack + optional word)
-        - WordResponse.java                   Defines what the response looks like (word + score, or a message)
+        - WordRequest.java       (Defines what the request body looks like [rack + optional word])
+        - WordResponse.java     (Defines what the response looks like [word + score, or a message])
       - model/
-        - LetterInfo.java                     Simple object that holds a letter's point value and how many tiles exist
+        - LetterInfo.java      (Simple object that holds a letter's point value and how many tiles exist)
       - exception/
-        - InvalidInputException.java          Custom error thrown when the input breaks the rules
-        - GlobalExceptionHandler.java         Catches all errors and turns them into clean JSON instead of ugly stack traces
+        - InvalidInputException.java    (Custom error thrown when the input breaks the rules)
+        - GlobalExceptionHandler.java   (Catches all errors and turns them into clean JSON instead of ugly stack traces)
     - resources/
-      - application.properties               Config file, sets the port to 8080 and points to the data files
-      - dictionary.txt                        List of valid English words, one per line, loaded when the app starts
-      - letter_data.json                      Each letter's Scrabble score and how many tiles of it exist in the game
+      - application.properties        (Config file, sets the port to 8080 and points to the data files)
+      - dictionary.txt                (List of valid English words, one per line, loaded when the app starts)
+      - letter_data.json              (Each letter's Scrabble score and how many tiles of it exist in the game)
       - static/
-        - index.html                          The browser UI - open localhost:8080 to use it
+        - index.html                  (The browser UI, open localhost:8080 to use it)
   - test/
     - java/com/hasbropulse/scrabble/
-      - ScrabbleServiceTest.java              16 tests - covers all four challenge examples and edge cases
-## Setup and installation
+      - ScrabbleServiceTest.java       (16 tests, covering all four challenge examples and edge cases)
+
+Setup and installation
 
 Make sure you have Java 17 and Maven 3.8+ installed. Then:
 
-bash command 
-git clone <repository-url>
+CLI command 
+git clone https://github.com/nikhilt10p/scrabble-word-builder.git
 cd scrabble-word-builder
 mvn clean package -DskipTests
 
 That compiles everything and packages it into a JAR. You only need to do this once.
 
 
-## Running it
+Running it
 
-bash command 
+CLI command 
 mvn spring-boot:run
 
 Wait for this in the output:
@@ -64,14 +66,14 @@ Started ScrabbleWordBuilderApplication in x.x seconds
 
 Or if you'd rather run the JAR directly:
 
-bash command
+CLI command 
 java -jar target/scrabble-word-builder-1.0.0.jar
 
 
 Both do the same thing. The server starts on port 8080.
 
 
-# Usage
+Usage
 
 Browser UI: go to `http://localhost:8080`. Enter your rack letters, optionally a board word, and click Find Best Word. There are four example buttons at the bottom that load the challenge examples directly if you want to verify those first.
 
@@ -80,9 +82,9 @@ Swagger UI:go to `http://localhost:8080/swagger-ui.html` to try the endpoints in
 curl : see the Examples section below.
 
 
-# API
+API
 
-# POST /api/scrabble/best-word
+POST /api/scrabble/best-word
 
 json
 {
@@ -104,7 +106,7 @@ Bad input (400):
 json
 { "error": "Invalid input", "message": "rack must contain between 1 and 7 letters, but got 8" }
 
-# GET /api/scrabble/health
+GET /api/scrabble/health
 
 Quick check that the service is up and the dictionary loaded correctly.
 
@@ -112,7 +114,7 @@ json
 { "status": "UP", "service": "Scrabble Word Builder", "dictionarySize": "2302" }
 
 
-# Examples
+Examples
 
 All four from the challenge document, tested locally on CLI 
 
@@ -153,7 +155,7 @@ json
 {"error":"Invalid input","message":"rack must contain between 1 and 7 letters, but got 8"}
 
 
-# Validation rules
+Validation rules
 
  Rule | Response 
 
@@ -169,17 +171,17 @@ json
 Intentionally left out per the spec: blank tiles, bonus squares, board positioning.
 
 
-# Running the tests
-
-Bash Command: mvn test
+Running the tests:
+CLI command
+mvn test
 
 Result:
 16 tests covering all four challenge examples plus edge cases - null rack, blank rack, numbers in input, tile limit checks, lowercase input, empty board word, single-letter rack, max rack size, score verification for WIZARD and DRAW, canForm with and without Z, tie-breaking, and confirming the dictionary and letter data loaded correctly.
 
 
-# Assumptions and design decisions
+Assumptions and design decisions
 
-Format choice : The spec left the format open so I went with a REST API. It's the most practical format for something like this, to test with curl or Swagger, and straightforward to extend later. I added a browser UI on top so it's usable without any command-line knowledge.
+Format choice : I went with a REST API. It's the most practical format for something like this, to test with curl or Swagger, and straightforward to extend later. I added a browser UI on top so it's usable without any command-line knowledge.
 
 Dictionary : I built a custom list of around 2300 common English words rather than bundling a full Scrabble dictionary. It covers all the challenge examples and typical inputs. If you want to swap in the full TWL06 or SOWPODS word list, just replace `dictionary.txt` nothing in the code needs to change.
 
@@ -198,7 +200,7 @@ Case handling : Input is uppercased before any processing so lowercase, uppercas
 Blank tiles : Excluded per the spec. The tile count validation only covers the 26 standard letters.
 
 
-# Data files
+Data files
 
 `dictionary.txt` One word per line, loaded at startup. Around 2300 words. Replace with any word list to extend coverage without touching code.
 
@@ -225,10 +227,8 @@ Quick scoring reference:
 | Q Z | 10 |
 
 
-# What I'd add with more time
+Optimization and scalability: 
 
-Larger dictionary- TWL06 has around 178k words, would be a straight file swap
-Controller tests- MockMvc tests to cover the full HTTP layer on top of the service tests
 Docker - A Dockerfile so it runs without needing Java or Maven installed
 Score endpoint - Something like `GET /api/scrabble/score?word=WIZARD` for checking individual words
-Board word length cap - Right now there's no limit on board word length, but in a real game the board is 15 squares so it should probably be bounded
+Board word length cap - Right now there's no limit on board word length, but in a real game the board is 15 squares so it should probably be bounded in real life events 
