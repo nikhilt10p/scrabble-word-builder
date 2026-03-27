@@ -17,9 +17,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-/** Handles the core word-finding logic for the Scrabble Word Builder, approach: combine rack letters with any board word into a pool and checks each 
- dictionary word against that pool, score the valid ones. Returns the highest scorer, Ties go alphabetically. 
- * Dictionary and letter data are loaded once at startup to keep lookups fast, no blank tiles; keeping it simple per the challenge requirements.*/
+// This handles the core word-finding logic for the Scrabble Word Builder, the approach will combine rack letters with any board word into a pool and checks each 
+ //dictionary word against that pool, score the valid ones. Returns the highest scorer, Ties go alphabetically as per the given reqs. 
+ // Dictionary and letter data are loaded once at startup to keep lookups fast, no blank tiles are considered keeping it simple per the challenge requirements.*/
 @Service
 public class ScrabbleService {
 
@@ -75,7 +75,7 @@ public class ScrabbleService {
         raw.forEach((key, info) -> letterData.put(key.toUpperCase().charAt(0), info));
     }
 
-    /* Returns the highest-scoring word that can be built from the rack plus any letters from the board word. Returns empty if no valid word can be formed.*/
+    // Returns the highest-scoring word that can be built from the rack plus any letters from the board word. Returns empty if no valid word can be formed.
     public Optional<Map.Entry<String, Integer>> findBestWord(String rack, String boardWord) {
 
         // validate rack
@@ -100,11 +100,11 @@ public class ScrabbleService {
             }
         }
 
-        // pool = rack + board word letters
+        // Considering pool = rack + board word letters
         String pool = normRack + normBoard;
         Map<Character, Integer> poolFreq = letterFrequency(pool);
 
-        // make sure we're not using more tiles than actually exist in a real set
+        // makes sure we're not using more tiles than actually exist in a real set
         for (Map.Entry<Character, Integer> entry : poolFreq.entrySet()) {
             char letter = entry.getKey();
             int count = entry.getValue();
@@ -119,7 +119,7 @@ public class ScrabbleService {
             }
         }
 
-        // scan dictionary for the best word
+        // scan dictionary for the best word 
         String bestWord = null;
         int bestScore = -1;
 
@@ -155,7 +155,7 @@ public class ScrabbleService {
         return true;
     }
 
-    // sums up letter values to get the word's Scrabble score
+    // sums up letter values to get the word's scrabble score
     public int scoreWord(String word) {
         int total = 0;
         for (char c : word.toCharArray()) {
@@ -167,7 +167,7 @@ public class ScrabbleService {
         return total;
     }
 
-    // builds a map of letter -> count for a given string
+    // builds a map of letter, performing count for a given string
     public Map<Character, Integer> letterFrequency(String s) {
         Map<Character, Integer> freq = new HashMap<>();
         for (char c : s.toCharArray()) {
