@@ -17,16 +17,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-/**
- * Handles the core word-finding logic for the Scrabble Word Builder.
- *
- * The approach: combine rack letters with any board word into a pool,
- * check each dictionary word against that pool, score the valid ones,
- * and return the highest scorer. Ties go alphabetically.
- *
- * Dictionary and letter data are loaded once at startup to keep lookups fast.
- * No blank tiles — keeping it simple per the challenge requirements.
- */
+/** Handles the core word-finding logic for the Scrabble Word Builder, approach: combine rack letters with any board word into a pool and checks each 
+ dictionary word against that pool, score the valid ones. Returns the highest scorer, Ties go alphabetically. 
+ * Dictionary and letter data are loaded once at startup to keep lookups fast, no blank tiles; keeping it simple per the challenge requirements.*/
 @Service
 public class ScrabbleService {
 
@@ -82,12 +75,7 @@ public class ScrabbleService {
         raw.forEach((key, info) -> letterData.put(key.toUpperCase().charAt(0), info));
     }
 
-    /**
-     * Returns the highest-scoring word that can be built from the rack
-     * plus any letters from the board word.
-     *
-     * Returns empty if no valid word can be formed.
-     */
+    /* Returns the highest-scoring word that can be built from the rack plus any letters from the board word. Returns empty if no valid word can be formed.*/
     public Optional<Map.Entry<String, Integer>> findBestWord(String rack, String boardWord) {
 
         // validate rack
